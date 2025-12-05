@@ -55,7 +55,28 @@ TRANSLATIONS = {
         'step4': 'Tham khảo bác sĩ để chẩn đoán chuyên sâu',
         'model_info': 'THÔNG TIN MODEL',
         'warning': 'LƯU Ý Y TẾ',
-        'warning_text': 'Ứng dụng này CHỈ hỗ trợ tham khảo, KHÔNG thay thế chẩn đoán y khoa chuyên nghiệp. Luôn tham khảo bác sĩ da liễu có chứng chỉ!'
+        'warning_text': 'Ứng dụng này CHỈ hỗ trợ tham khảo, KHÔNG thay thế chẩn đoán y khoa chuyên nghiệp. Luôn tham khảo bác sĩ da liễu có chứng chỉ!',
+        # Flowchart
+        'workflow_title': 'Quy trình phân tích AI',
+        'flow_step1': 'Chuẩn bị ảnh',
+        'flow_step2': 'Tải ảnh lên',
+        'flow_step3': 'AI phân tích',
+        'flow_step4': 'Nhận kết quả',
+        'flow_step5': 'Tham khảo bác sĩ',
+        # Sidebar
+        'system_ai': 'HỆ THỐNG AI',
+        'device': 'Thiết bị:',
+        'status': 'Trạng thái:',
+        'ready': 'Sẵn sàng',
+        'guide_title': 'HƯỚNG DẪN SỬ DỤNG',
+        'guide_step1': 'Tải ảnh tổn thương da lên hệ thống',
+        'guide_step2': 'AI tự động phân tích và nhận diện',
+        'guide_step3': 'Xem kết quả, biểu đồ và thông tin chi tiết',
+        'guide_step4': 'Tham khảo bác sĩ để chẩn đoán chuyên sâu',
+        'important_note': 'LƯU Ý QUAN TRỌNG',
+        'note_text': 'Kết quả AI chỉ mang tính chất tham khảo. Luôn tham khảo ý kiến bác sĩ chuyên khoa để có chẩn đoán chính xác.',
+        'cannot_load_model': 'Không thể tải model từ:',
+        'ensure_model': 'Vui lòng đảm bảo file \'best_model.pt\' có trong thư mục gốc.'
     },
     'en': {
         'title': 'AI-POWERED SKIN CANCER DETECTION SYSTEM',
@@ -81,7 +102,28 @@ TRANSLATIONS = {
         'step4': 'Consult doctor for professional diagnosis',
         'model_info': 'MODEL INFORMATION',
         'warning': 'MEDICAL DISCLAIMER',
-        'warning_text': 'This application is for REFERENCE ONLY and does NOT replace professional medical diagnosis. Always consult a certified dermatologist!'
+        'warning_text': 'This application is for REFERENCE ONLY and does NOT replace professional medical diagnosis. Always consult a certified dermatologist!',
+        # Flowchart
+        'workflow_title': 'AI Analysis Workflow',
+        'flow_step1': 'Prepare Image',
+        'flow_step2': 'Upload Image',
+        'flow_step3': 'AI Analysis',
+        'flow_step4': 'Get Results',
+        'flow_step5': 'Consult Doctor',
+        # Sidebar
+        'system_ai': 'AI SYSTEM',
+        'device': 'Device:',
+        'status': 'Status:',
+        'ready': 'Ready',
+        'guide_title': 'USER GUIDE',
+        'guide_step1': 'Upload skin lesion image to system',
+        'guide_step2': 'AI automatically analyzes and identifies',
+        'guide_step3': 'View results, charts and detailed information',
+        'guide_step4': 'Consult doctor for professional diagnosis',
+        'important_note': 'IMPORTANT NOTE',
+        'note_text': 'AI results are for reference only. Always consult a specialist for accurate diagnosis.',
+        'cannot_load_model': 'Cannot load model from:',
+        'ensure_model': 'Please ensure \'best_model.pt\' file exists in the root directory.'
     }
 }
 
@@ -692,15 +734,15 @@ def main():
                 box-shadow: 0 8px 24px rgba(25,118,210,0.35);
             '>
                 <h2 style='margin: 0 0 18px 0; text-align: center; font-size: 1.5rem; font-weight: 800;'>
-                    ⚕ HỆ THỐNG AI
+                    ⚕ {t('system_ai')}
                 </h2>
                 <div style='background: rgba(255,255,255,0.15); padding: 15px; border-radius: 12px; margin-top: 15px;'>
                     <div style='display: flex; justify-content: space-between; margin-bottom: 12px;'>
-                        <span style='font-weight: 600;'>▣ Thiết bị:</span>
+                        <span style='font-weight: 600;'>▣ {t('device')}</span>
                         <span style='background: rgba(255,255,255,0.25); padding: 4px 12px; border-radius: 6px; font-weight: 700;'>{device}</span>
                     </div>
                     <div style='display: flex; justify-content: space-between;'>
-                        <span style='font-weight: 600;'>▣ Trạng thái:</span>
+                        <span style='font-weight: 600;'>▣ {t('status')}</span>
                         <span style='background: {status_bg}; padding: 4px 12px; border-radius: 6px; font-weight: 700;'>{status_text}</span>
                     </div>
                 </div>
@@ -708,11 +750,11 @@ def main():
         """.format(
             device=DEVICE.upper(),
             status_bg='#4CAF50' if model_loaded else '#F44336',
-            status_text='✓ Sẵn sàng' if model_loaded else '✗ Lỗi'
+            status_text=('✓ ' + t('ready')) if model_loaded else '✗ Error'
         ), unsafe_allow_html=True)
         
         # Quick Guide with icons
-        st.markdown("""
+        st.markdown(f"""
             <div style='
                 background: linear-gradient(135deg, rgba(76,175,80,0.1) 0%, rgba(56,142,60,0.05) 100%);
                 padding: 20px;
@@ -721,31 +763,31 @@ def main():
                 margin-bottom: 20px;
             '>
                 <h3 style='color: #2E7D32; margin: 0 0 18px 0; text-align: center; font-weight: 800; font-size: 1.15rem;'>
-                    HƯỚNG DẪN SỬ DỤNG
+                    {t('guide_title')}
                 </h3>
                 <div style='color: #2E7D32; line-height: 1.9;'>
                     <div style='margin: 10px 0; display: flex; align-items: flex-start;'>
                         <span style='background: #4CAF50; color: white; padding: 4px 10px; border-radius: 50%; margin-right: 12px; font-weight: 700; font-size: 0.9rem;'>①</span>
-                        <span style='font-weight: 600;'>Tải ảnh tổn thương da lên hệ thống</span>
+                        <span style='font-weight: 600;'>{t('guide_step1')}</span>
                     </div>
                     <div style='margin: 10px 0; display: flex; align-items: flex-start;'>
                         <span style='background: #4CAF50; color: white; padding: 4px 10px; border-radius: 50%; margin-right: 12px; font-weight: 700; font-size: 0.9rem;'>②</span>
-                        <span style='font-weight: 600;'>AI tự động phân tích và nhận diện</span>
+                        <span style='font-weight: 600;'>{t('guide_step2')}</span>
                     </div>
                     <div style='margin: 10px 0; display: flex; align-items: flex-start;'>
                         <span style='background: #4CAF50; color: white; padding: 4px 10px; border-radius: 50%; margin-right: 12px; font-weight: 700; font-size: 0.9rem;'>③</span>
-                        <span style='font-weight: 600;'>Xem kết quả, biểu đồ và thông tin chi tiết</span>
+                        <span style='font-weight: 600;'>{t('guide_step3')}</span>
                     </div>
                     <div style='margin: 10px 0; display: flex; align-items: flex-start;'>
                         <span style='background: #4CAF50; color: white; padding: 4px 10px; border-radius: 50%; margin-right: 12px; font-weight: 700; font-size: 0.9rem;'>④</span>
-                        <span style='font-weight: 600;'>Tham khảo bác sĩ để chẩn đoán chuyên sâu</span>
+                        <span style='font-weight: 600;'>{t('guide_step4')}</span>
                     </div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
         
         # Statistics card
-        st.markdown("""
+        st.markdown(f"""
             <div style='
                 background: linear-gradient(135deg, rgba(255,152,0,0.1) 0%, rgba(245,124,0,0.05) 100%);
                 padding: 20px;
@@ -754,47 +796,47 @@ def main():
                 margin-bottom: 20px;
             '>
                 <h3 style='color: #E65100; margin: 0 0 18px 0; text-align: center; font-weight: 800; font-size: 1.15rem;'>
-                    THÔNG TIN MODEL
+                    {t('model_info')}
                 </h3>
                 <div style='color: #E65100; font-weight: 600; line-height: 1.9;'>
                     <div style='margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 8px;'>
-                        <span style='opacity: 0.8;'>Phiên bản:</span> <span style='float: right; font-weight: 800;'>3.0</span>
+                        <span style='opacity: 0.8;'>{t('model_version')}:</span> <span style='float: right; font-weight: 800;'>3.0</span>
                     </div>
                     <div style='margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 8px;'>
-                        <span style='opacity: 0.8;'>Kiến trúc:</span> <span style='float: right; font-weight: 800;'>HybridViT</span>
+                        <span style='opacity: 0.8;'>{t('architecture')}:</span> <span style='float: right; font-weight: 800;'>HybridViT</span>
                     </div>
                     <div style='margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 8px;'>
-                        <span style='opacity: 0.8;'>Dataset:</span> <span style='float: right; font-weight: 800;'>ISIC 2018</span>
+                        <span style='opacity: 0.8;'>{t('dataset')}:</span> <span style='float: right; font-weight: 800;'>ISIC 2018</span>
                     </div>
                     <div style='margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 8px;'>
-                        <span style='opacity: 0.8;'>Độ chính xác:</span> <span style='float: right; font-weight: 800;'>85%+</span>
+                        <span style='opacity: 0.8;'>{t('accuracy')}:</span> <span style='float: right; font-weight: 800;'>85%+</span>
                     </div>
                     <div style='margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 8px;'>
-                        <span style='opacity: 0.8;'>Số lớp:</span> <span style='float: right; font-weight: 800;'>9 loại</span>
+                        <span style='opacity: 0.8;'>{t('classes')}:</span> <span style='float: right; font-weight: 800;'>9 {'types' if st.session_state.language == 'en' else 'loại'}</span>
                     </div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
         
         # Warning notice
-        st.markdown("""
+        st.markdown(f"""
             <div style='
                 background: linear-gradient(135deg, rgba(244,67,54,0.1) 0%, rgba(229,57,53,0.05) 100%);
                 padding: 18px;
                 border-radius: 12px;
                 border: 2px solid rgba(244,67,54,0.3);
             '>
-                <h4 style='color: #C62828; margin: 0 0 12px 0; text-align: center; font-weight: 800;'>⚠ LƯU Ý QUAN TRỌNG</h4>
+                <h4 style='color: #C62828; margin: 0 0 12px 0; text-align: center; font-weight: 800;'>⚠ {t('important_note')}</h4>
                 <p style='color: #C62828; font-size: 0.9rem; margin: 0; line-height: 1.7; font-weight: 600;'>
-                    Kết quả AI chỉ mang tính chất tham khảo. Luôn tham khảo ý kiến bác sĩ chuyên khoa để có chẩn đoán chính xác.
+                    {t('note_text')}
                 </p>
             </div>
         """, unsafe_allow_html=True)
     
     # Main content
     if not model_loaded:
-        st.error(f"Không thể tải model từ: {CHECKPOINT_PATH}")
-        st.info("Vui lòng đảm bảo file 'best_model.pt' có trong thư mục gốc.")
+        st.error(f"{t('cannot_load_model')} {CHECKPOINT_PATH}")
+        st.info(t('ensure_model'))
         return
     
     # File uploader - compact version with translation
@@ -806,9 +848,9 @@ def main():
     
     # Flowchart when no image uploaded
     if uploaded_file is None:
-        st.markdown("""
+        st.markdown(f"""
             <h2 style='color: #1565C0; margin: 20px 0 25px 0; font-weight: 900; font-size: 1.5rem; text-align: center;'>
-                Quy trình phân tích AI
+                {t('workflow_title')}
             </h2>
         """, unsafe_allow_html=True)
         
@@ -816,7 +858,7 @@ def main():
         cols = st.columns([1, 0.3, 1, 0.3, 1, 0.3, 1, 0.3, 1])
         
         with cols[0]:
-            st.markdown("""
+            st.markdown(f"""
                 <div style='
                     background: white;
                     padding: 12px 10px;
@@ -825,7 +867,7 @@ def main():
                     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
                     text-align: center;
                 '>
-                    <h4 style='color: #1565C0; margin: 0; font-size: 0.95rem; font-weight: 800;'>Chuẩn bị ảnh</h4>
+                    <h4 style='color: #1565C0; margin: 0; font-size: 0.95rem; font-weight: 800;'>{t('flow_step1')}</h4>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -833,7 +875,7 @@ def main():
             st.markdown("<div style='text-align: center; padding-top: 10px; color: #1976D2; font-size: 1.3rem;'>→</div>", unsafe_allow_html=True)
         
         with cols[2]:
-            st.markdown("""
+            st.markdown(f"""
                 <div style='
                     background: white;
                     padding: 12px 10px;
@@ -842,7 +884,7 @@ def main():
                     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
                     text-align: center;
                 '>
-                    <h4 style='color: #1565C0; margin: 0; font-size: 0.95rem; font-weight: 800;'>Tải ảnh lên</h4>
+                    <h4 style='color: #1565C0; margin: 0; font-size: 0.95rem; font-weight: 800;'>{t('flow_step2')}</h4>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -850,7 +892,7 @@ def main():
             st.markdown("<div style='text-align: center; padding-top: 10px; color: #1976D2; font-size: 1.3rem;'>→</div>", unsafe_allow_html=True)
         
         with cols[4]:
-            st.markdown("""
+            st.markdown(f"""
                 <div style='
                     background: white;
                     padding: 12px 10px;
@@ -859,7 +901,7 @@ def main():
                     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
                     text-align: center;
                 '>
-                    <h4 style='color: #1565C0; margin: 0; font-size: 0.95rem; font-weight: 800;'>AI phân tích</h4>
+                    <h4 style='color: #1565C0; margin: 0; font-size: 0.95rem; font-weight: 800;'>{t('flow_step3')}</h4>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -867,7 +909,7 @@ def main():
             st.markdown("<div style='text-align: center; padding-top: 10px; color: #1976D2; font-size: 1.3rem;'>→</div>", unsafe_allow_html=True)
         
         with cols[6]:
-            st.markdown("""
+            st.markdown(f"""
                 <div style='
                     background: white;
                     padding: 12px 10px;
@@ -876,7 +918,7 @@ def main():
                     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
                     text-align: center;
                 '>
-                    <h4 style='color: #1565C0; margin: 0; font-size: 0.95rem; font-weight: 800;'>Nhận kết quả</h4>
+                    <h4 style='color: #1565C0; margin: 0; font-size: 0.95rem; font-weight: 800;'>{t('flow_step4')}</h4>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -884,7 +926,7 @@ def main():
             st.markdown("<div style='text-align: center; padding-top: 10px; color: #FF9800; font-size: 1.3rem;'>→</div>", unsafe_allow_html=True)
         
         with cols[8]:
-            st.markdown("""
+            st.markdown(f"""
                 <div style='
                     background: linear-gradient(135deg, rgba(255,193,7,0.15) 0%, rgba(255,152,0,0.1) 100%);
                     padding: 12px 10px;
@@ -893,7 +935,7 @@ def main():
                     box-shadow: 0 2px 6px rgba(255,152,0,0.2);
                     text-align: center;
                 '>
-                    <h4 style='color: #E65100; margin: 0; font-size: 0.95rem; font-weight: 800;'>Tham khảo bác sĩ</h4>
+                    <h4 style='color: #E65100; margin: 0; font-size: 0.95rem; font-weight: 800;'>{t('flow_step5')}</h4>
                 </div>
             """, unsafe_allow_html=True)
         
