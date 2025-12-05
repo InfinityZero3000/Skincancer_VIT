@@ -543,12 +543,8 @@ def main():
                 </h2>
                 <div style='background: rgba(255,255,255,0.15); padding: 15px; border-radius: 12px; margin-top: 15px;'>
                     <div style='display: flex; justify-content: space-between; margin-bottom: 12px;'>
-                        <span style='font-weight: 600;'>◈ Thiết bị:</span>
+                        <span style='font-weight: 600;'>▣ Thiết bị:</span>
                         <span style='background: rgba(255,255,255,0.25); padding: 4px 12px; border-radius: 6px; font-weight: 700;'>{device}</span>
-                    </div>
-                    <div style='display: flex; justify-content: space-between; margin-bottom: 12px;'>
-                        <span style='font-weight: 600;'>◉ Model:</span>
-                        <span style='background: rgba(255,255,255,0.25); padding: 4px 12px; border-radius: 6px; font-weight: 700;'>HybridViT</span>
                     </div>
                     <div style='display: flex; justify-content: space-between;'>
                         <span style='font-weight: 600;'>▣ Trạng thái:</span>
@@ -572,7 +568,7 @@ def main():
                 margin-bottom: 20px;
             '>
                 <h3 style='color: #2E7D32; margin: 0 0 18px 0; text-align: center; font-weight: 800; font-size: 1.15rem;'>
-                    ◉ HƯỚNG DẪN SỬ DỤNG
+                    HƯỚNG DẪN SỬ DỤNG
                 </h3>
                 <div style='color: #2E7D32; line-height: 1.9;'>
                     <div style='margin: 10px 0; display: flex; align-items: flex-start;'>
@@ -605,7 +601,7 @@ def main():
                 margin-bottom: 20px;
             '>
                 <h3 style='color: #E65100; margin: 0 0 18px 0; text-align: center; font-weight: 800; font-size: 1.15rem;'>
-                    ▤ THÔNG TIN MODEL
+                    THÔNG TIN MODEL
                 </h3>
                 <div style='color: #E65100; font-weight: 600; line-height: 1.9;'>
                     <div style='margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 8px;'>
@@ -650,10 +646,86 @@ def main():
     
     # File uploader - compact version
     uploaded_file = st.file_uploader(
-        "▣ Chọn ảnh da cần phân tích (JPG, PNG, JPEG)",
+        "Chọn ảnh da cần phân tích (JPG, PNG, JPEG)",
         type=['jpg', 'jpeg', 'png'],
         help="Tải ảnh rõ nét của vùng da cần kiểm tra"
     )
+    
+    # Information when no image uploaded
+    if uploaded_file is None:
+        st.markdown("""
+            <div style='
+                background: linear-gradient(135deg, rgba(25,118,210,0.08) 0%, rgba(13,71,161,0.04) 100%);
+                padding: 40px 30px;
+                border-radius: 18px;
+                border: 3px solid rgba(25,118,210,0.3);
+                margin: 30px 0;
+                text-align: center;
+            '>
+                <h2 style='color: #1565C0; margin: 0 0 25px 0; font-weight: 900; font-size: 1.8rem;'>
+                    Hướng dẫn sử dụng
+                </h2>
+                <div style='color: #0D47A1; font-size: 1.05rem; line-height: 1.9; text-align: left; max-width: 800px; margin: 0 auto;'>
+                    <div style='background: white; padding: 20px; border-radius: 12px; margin: 15px 0; border-left: 5px solid #1976D2;'>
+                        <p style='font-weight: 700; margin: 0 0 10px 0; color: #1976D2;'>① Chuẩn bị ảnh</p>
+                        <p style='margin: 0; font-weight: 500;'>Chụp ảnh vùng da cần kiểm tra với độ phân giải cao, ánh sáng tốt và tập trung vào vùng tổn thương.</p>
+                    </div>
+                    <div style='background: white; padding: 20px; border-radius: 12px; margin: 15px 0; border-left: 5px solid #1976D2;'>
+                        <p style='font-weight: 700; margin: 0 0 10px 0; color: #1976D2;'>② Tải ảnh lên</p>
+                        <p style='margin: 0; font-weight: 500;'>Nhấn vào nút "Browse files" ở trên để chọn ảnh từ thiết bị của bạn (hỗ trợ JPG, PNG, JPEG).</p>
+                    </div>
+                    <div style='background: white; padding: 20px; border-radius: 12px; margin: 15px 0; border-left: 5px solid #1976D2;'>
+                        <p style='font-weight: 700; margin: 0 0 10px 0; color: #1976D2;'>③ Nhận kết quả</p>
+                        <p style='margin: 0; font-weight: 500;'>Hệ thống AI sẽ phân tích và đưa ra kết quả chẩn đoán trong vài giây, bao gồm loại tổn thương, độ tin cậy và thông tin chi tiết.</p>
+                    </div>
+                    <div style='background: white; padding: 20px; border-radius: 12px; margin: 15px 0; border-left: 5px solid #1976D2;'>
+                        <p style='font-weight: 700; margin: 0 0 10px 0; color: #1976D2;'>④ Tham khảo ý kiến bác sĩ</p>
+                        <p style='margin: 0; font-weight: 500;'>Kết quả AI chỉ mang tính tham khảo. Luôn tham khảo ý kiến bác sĩ da liễu để có chẩn đoán chính xác.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style='
+                background: linear-gradient(135deg, rgba(255,193,7,0.1) 0%, rgba(255,152,0,0.05) 100%);
+                padding: 25px;
+                border-radius: 14px;
+                border: 2px solid rgba(255,152,0,0.4);
+                margin: 20px 0;
+            '>
+                <h3 style='color: #E65100; margin: 0 0 18px 0; text-align: center; font-weight: 800; font-size: 1.3rem;'>
+                    ⚕ Hệ thống có thể phát hiện 9 loại tổn thương da
+                </h3>
+                <div style='display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px;'>
+                    <div style='background: white; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #E3F2FD;'>
+                        <p style='margin: 0; color: #1565C0; font-weight: 700; font-size: 0.9rem;'>Actinic Keratosis</p>
+                    </div>
+                    <div style='background: white; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #E3F2FD;'>
+                        <p style='margin: 0; color: #1565C0; font-weight: 700; font-size: 0.9rem;'>Basal Cell Carcinoma</p>
+                    </div>
+                    <div style='background: white; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #E3F2FD;'>
+                        <p style='margin: 0; color: #1565C0; font-weight: 700; font-size: 0.9rem;'>Dermatofibroma</p>
+                    </div>
+                    <div style='background: white; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #E3F2FD;'>
+                        <p style='margin: 0; color: #1565C0; font-weight: 700; font-size: 0.9rem;'>Melanoma</p>
+                    </div>
+                    <div style='background: white; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #E3F2FD;'>
+                        <p style='margin: 0; color: #1565C0; font-weight: 700; font-size: 0.9rem;'>Nevus</p>
+                    </div>
+                    <div style='background: white; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #E3F2FD;'>
+                        <p style='margin: 0; color: #1565C0; font-weight: 700; font-size: 0.9rem;'>Pigmented Keratosis</p>
+                    </div>
+                    <div style='background: white; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #E3F2FD;'>
+                        <p style='margin: 0; color: #1565C0; font-weight: 700; font-size: 0.9rem;'>Seborrheic Keratosis</p>
+                    </div>
+                    <div style='background: white; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #E3F2FD;'>
+                        <p style='margin: 0; color: #1565C0; font-weight: 700; font-size: 0.9rem;'>Squamous Cell Carcinoma</p>
+                    </div>
+                    <div style='background: white; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #E3F2FD;'>
+                        <p style='margin: 0; color: #1565C0; font-weight: 700; font-size: 0.9rem;'>Vascular Lesion</p>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
     
     if uploaded_file is not None:
         image = Image.open(uploaded_file).convert('RGB')
