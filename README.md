@@ -131,18 +131,6 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-**Dependencies chính:**
-```
-torch>=2.0.0
-torchvision>=0.15.0
-streamlit>=1.28.0
-timm>=0.6.12
-numpy<2.0
-pandas>=1.3.0
-plotly>=5.0.0
-Pillow>=8.0.0
-```
-
 ### 4. Tải model pretrained
 
 Model file `best_model.pt` đã có sẵn trong repository. Nếu không có, download từ link được cung cấp và đặt vào thư mục gốc.
