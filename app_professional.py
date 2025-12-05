@@ -241,43 +241,48 @@ def download_model_from_drive():
 def load_model():
     """Load model with caching and auto-download"""
     
-    # Thêm spacing để tránh bị header che
-    st.write("")
-    st.write("")
-    
     # Ưu tiên load model từ file có sẵn trong project
     if os.path.exists(CHECKPOINT_PATH):
         try:
-            with st.spinner("Đang load model vào bộ nhớ..."):
-                model = HybridViT(num_classes=NUM_CLASSES).to(DEVICE)
-                model.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=DEVICE))
-                model.eval()
-                st.toast("✓ Model đã sẵn sàng!")
-                return model, True
+            model = HybridViT(num_classes=NUM_CLASSES).to(DEVICE)
+            model.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=DEVICE))
+            model.eval()
+            return model, True, "local"
         except Exception as e:
-            st.toast(f"Lỗi load model: {str(e)}")
-            return None, False
+            return None, False, f"error: {str(e)}"
     
     # Nếu không có file, tải từ Google Drive
     else:
-        st.toast("⚠ Model chưa có, đang tải từ Google Drive...", icon="⬇")
         if download_model_from_drive():
             # Thử load lại sau khi download
             try:
-                with st.spinner("Đang load model vào bộ nhớ..."):
-                    model = HybridViT(num_classes=NUM_CLASSES).to(DEVICE)
-                    model.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=DEVICE))
-                    model.eval()
-                    st.toast("✓ Model đã sẵn sàng!")
-                    return model, True
+                model = HybridViT(num_classes=NUM_CLASSES).to(DEVICE)
+                model.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=DEVICE))
+                model.eval()
+                return model, True, "downloaded"
             except Exception as e:
-                st.toast(f"Lỗi load model: {str(e)}")
-                return None, False
+                return None, False, f"error: {str(e)}"
         else:
-            return None, False
+            return None, False, "download_failed"
 
 
-model, model_loaded = load_model()
+# Load model và hiển thị thông báo
+st.write("")
+st.write("")
+
+with st.spinner("Đang load model..."):
+    model, model_loaded, load_status = load_model()
+
+# Hiển thị toast dựa trên kết quả (auto-hide sau 10s)
+if model_loaded:
+    if load_status == "local":
+        st.toast("Model đã sẵn sàng!")
+    elif load_status == "downloaded":
+        st.toast("Model đã tải và sẵn sàng!")
+elif "error" in load_status:
+    st.toast(f"{load_status.replace('error: ', '')}")
+elif load_status == "download_failed":
+    st.toast("Không thể tải model từ Google Drive")
 
 
 # ========================== PREDICTION FUNCTION ==========================
