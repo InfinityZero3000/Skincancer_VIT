@@ -222,26 +222,4 @@ Nếu gặp vấn đề hoặc có câu hỏi:
 2. Kiểm tra phần [Issues](https://github.com/InfinityZero3000/Skincancer_VIT_Ver1.0_121125/issues)
 3. Đảm bảo đã cài đặt đúng dependencies trong `requirements.txt`
 
----
-
-## Version History
-
-### Version 3.0 (Current)
-- Giao diện chuyên nghiệp với màu xanh dương
-- Toast notifications tự động ẩn
-- Tối ưu layout, giảm scrolling
-- Hướng dẫn sử dụng flowchart
-- Auto-download model từ Google Drive
-- Charts tương tác với Plotly
-
-### Version 2.0
-- Giao diện hiện đại cơ bản
-- Hỗ trợ đa ngôn ngữ
-
-### Version 1.0
-- Giao diện cơ bản Streamlit
-- Chức năng phân loại đầy đủ
-
----
-
 Sức khỏe của bạn là ưu tiên hàng đầu. Luôn tham khảo ý kiến bác sĩ!
