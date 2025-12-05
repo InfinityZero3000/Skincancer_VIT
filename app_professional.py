@@ -5,6 +5,7 @@ Version: 3.0 - Professional UI with Blue Theme
 """
 
 import os
+import time
 import torch
 import torch.nn as nn
 import streamlit as st
@@ -208,28 +209,30 @@ def download_model_from_drive():
     file_id = "1QGJOCE4DIaqbj5DfMmfXoYL8D20xJ8XI"
     url = f"https://drive.google.com/uc?export=download&id={file_id}"
     
-    st.info("⬇ Đang tải model từ Google Drive lần đầu tiên... (330MB)")
+    # Thêm spacing để tránh bị header che
+    st.write("")
+    st.write("")
+    
+    st.toast("⬇ Đang tải model từ Google Drive... (330MB)")
     progress_bar = st.progress(0)
-    status_text = st.empty()
     
     try:
-        # Sử dụng gdown để download (đơn giản nhất)
-        status_text.text("Bắt đầu tải xuống...")
-        
         # Download với gdown
         output = gdown.download(id=file_id, output=CHECKPOINT_PATH, quiet=False)
         
         if output and os.path.exists(CHECKPOINT_PATH):
             progress_bar.progress(100)
-            status_text.text(f"✓ Tải thành công! Kích thước: {os.path.getsize(CHECKPOINT_PATH) / (1024**2):.1f}MB")
+            file_size = os.path.getsize(CHECKPOINT_PATH) / (1024**2)
+            st.toast(f"✓ Tải model thành công! ({file_size:.1f}MB)")
+            time.sleep(10)  # Hiển thị 10s
+            progress_bar.empty()
             return True
         else:
-            st.error("Không thể tải model. Vui lòng thử lại.")
+            st.toast("Không thể tải model. Vui lòng thử lại.")
             return False
         
     except Exception as e:
-        st.error(f"❌ Lỗi tải model: {str(e)}")
-        st.info("Đảm bảo link Google Drive đã được chia sẻ công khai!")
+        st.toast(f"Lỗi: {str(e)}")
         return False
 
 
@@ -238,6 +241,10 @@ def download_model_from_drive():
 def load_model():
     """Load model with caching and auto-download"""
     
+    # Thêm spacing để tránh bị header che
+    st.write("")
+    st.write("")
+    
     # Ưu tiên load model từ file có sẵn trong project
     if os.path.exists(CHECKPOINT_PATH):
         try:
@@ -245,15 +252,15 @@ def load_model():
                 model = HybridViT(num_classes=NUM_CLASSES).to(DEVICE)
                 model.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=DEVICE))
                 model.eval()
-                st.success("✓ Model đã sẵn sàng!")
+                st.toast("✓ Model đã sẵn sàng!")
                 return model, True
         except Exception as e:
-            st.error(f"Lỗi khi load model từ file: {str(e)}")
+            st.toast(f"Lỗi load model: {str(e)}")
             return None, False
     
     # Nếu không có file, tải từ Google Drive
     else:
-        st.warning("⚠ Model chưa có trong project. Đang tải từ Google Drive...")
+        st.toast("⚠ Model chưa có, đang tải từ Google Drive...", icon="⬇")
         if download_model_from_drive():
             # Thử load lại sau khi download
             try:
@@ -261,10 +268,10 @@ def load_model():
                     model = HybridViT(num_classes=NUM_CLASSES).to(DEVICE)
                     model.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=DEVICE))
                     model.eval()
-                    st.success("✓ Model đã sẵn sàng!")
+                    st.toast("✓ Model đã sẵn sàng!")
                     return model, True
             except Exception as e:
-                st.error(f"Lỗi khi load model: {str(e)}")
+                st.toast(f"Lỗi load model: {str(e)}")
                 return None, False
         else:
             return None, False
