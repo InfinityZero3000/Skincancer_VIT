@@ -21,3 +21,6 @@ logs/
 
 # macOS
 .DS_Store
+streamlit_logs/
+streamlit.logs
+streamlit.log
