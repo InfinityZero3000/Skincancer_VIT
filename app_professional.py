@@ -423,19 +423,19 @@ def download_model_from_drive():
 
 # ========================== LOAD MODEL ==========================
 @st.cache_resource(show_spinner=False)
-def load_model():
+def load_model(checkpoint_path, device, num_classes):
     """Load model with caching and auto-download"""
     
     # Ưu tiên load model từ file có sẵn trong project
-    if os.path.exists(CHECKPOINT_PATH):
+    if os.path.exists(checkpoint_path):
         try:
-            model = HybridViT(num_classes=NUM_CLASSES).to(DEVICE)
+            model = HybridViT(num_classes=num_classes).to(device)
             # Try loading without weights_only first (for older PyTorch versions)
             try:
-                checkpoint = torch.load(CHECKPOINT_PATH, map_location=DEVICE, weights_only=True)
+                checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
             except TypeError:
                 # Fallback for older PyTorch versions
-                checkpoint = torch.load(CHECKPOINT_PATH, map_location=DEVICE)
+                checkpoint = torch.load(checkpoint_path, map_location=device)
             
             # Checkpoint có thể là state_dict trực tiếp hoặc dictionary có key 'model_state_dict'
             if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
@@ -455,11 +455,11 @@ def load_model():
         if download_success:
             # Thử load lại sau khi download
             try:
-                model = HybridViT(num_classes=NUM_CLASSES).to(DEVICE)
+                model = HybridViT(num_classes=num_classes).to(device)
                 try:
-                    checkpoint = torch.load(CHECKPOINT_PATH, map_location=DEVICE, weights_only=True)
+                    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
                 except TypeError:
-                    checkpoint = torch.load(CHECKPOINT_PATH, map_location=DEVICE)
+                    checkpoint = torch.load(checkpoint_path, map_location=device)
                 
                 # Checkpoint có thể là state_dict trực tiếp hoặc dictionary có key 'model_state_dict'
                 if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
@@ -481,7 +481,7 @@ st.write("")
 st.write("")
 
 with st.spinner("Đang load model..."):
-    model, model_loaded, load_status = load_model()
+    model, model_loaded, load_status = load_model(CHECKPOINT_PATH, DEVICE, NUM_CLASSES)
 
 # Hiển thị toast dựa trên kết quả (auto-hide sau 10s)
 if model_loaded:
