@@ -467,16 +467,27 @@ def load_model(checkpoint_path, device, num_classes):
 st.write("")
 st.write("")
 
-with st.spinner("Đang load model..."):
-    model, model_loaded, load_status = load_model(CHECKPOINT_PATH, DEVICE, NUM_CLASSES)
-
-# Hiển thị toast dựa trên kết quả (auto-hide sau 10s)
-if model_loaded:
-    st.toast("✓ Model đã sẵn sàng!")
-elif "error" in load_status:
-    st.toast(f"❌ {load_status.replace('error: ', '')}")
-elif load_status == "download_failed":
-    st.toast("❌ Không thể tải model từ Google Drive")
+# Load model (chỉ chạy 1 lần khi app start)
+if 'model_initialized' not in st.session_state:
+    with st.spinner("Đang load model..."):
+        model, model_loaded, load_status = load_model(CHECKPOINT_PATH, DEVICE, NUM_CLASSES)
+        st.session_state.model = model
+        st.session_state.model_loaded = model_loaded
+        st.session_state.load_status = load_status
+        st.session_state.model_initialized = True
+        
+        # Hiển thị toast dựa trên kết quả
+        if model_loaded:
+            st.toast("✓ Model đã sẵn sàng!")
+        elif "error" in load_status:
+            st.toast(f"❌ {load_status.replace('error: ', '')}")
+        elif load_status == "download_failed":
+            st.toast("❌ Không thể tải model từ Google Drive")
+else:
+    # Lấy từ session state
+    model = st.session_state.model
+    model_loaded = st.session_state.model_loaded
+    load_status = st.session_state.load_status
 
 
 # ========================== PREDICTION FUNCTION ==========================
